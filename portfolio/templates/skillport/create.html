@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'skillport/css/create.css' %}">
+{% endblock %}
+
+{% block title %}
+    SkillPort - Создание проекта
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'create' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="create__project">
+                <div class="header">
+                    <div class="form__tittle">
+                        <div class="line"></div>
+                        <div>Создание проекта</div>
+                        <div class="line"></div>
+                        <button>
+                            <img src="" alt="" class="close">
+                        </button>
+                    </div>
+                </div>
+                <div class="name">
+                    <h1>Название</h1>
+                    {{ form.title }}
+                </div>
+                <div class="main__information">
+                    <div class="pictures">
+                        <div class="upload">
+                            <h1>Обложка</h1>
+                            {{ form.image }}
+                            <label for="input-button" class="input-button-label"></label> 
+                        </div>
+                        <div class="main__pictures">
+                            <!-- <img src="https://placehold.it/400x400" alt="" class="main__picture"> -->
+                            <img id='preview' src='/static/skillport/img/logo.jpg' class='main__picture'>
+                        </div> 
+                    </div>
+                    <div class="content">
+                        <h1>Направление</h1>
+                        <div class="dropdown">
+                            {{ form.content_type }}
+                        </div>
+                        <div class="upload">
+                            <h1>Дополнительные фото</h1>
+                            {{ imageform.managementform }}
+                            {{ imageform.additional_image }} 
+                            <label for="input-button" class="input-button-label"></label> 
+                        </div>
+                        <div class="upload">
+                            <h1>Дополнительные файлы</h1>
+                            {{ fileform.managementform }}
+                            {{ fileform.attached_file }} 
+                            <label for="input-button" class="input-button-label"></label> 
+                        </div>
+                    </div>
+                </div>
+                <div class="description">
+                    <h2>Описание</h2>
+                    {{ form.description }}
+                </div>
+                <div class="publish">
+                    <button class="publish__button">Опубликовать</button>
+                </div>
+            </div>
+    </div>
+    <script>
+        function previewImage(event) {
+            const fileInput = event.target;
+            const preview = document.getElementById('preview');
+          
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+          
+            reader.onload = function (e) {
+              preview.src = e.target.result;
+            };
+    
+            reader.readAsDataURL(file);
+          }
+    </script>
+{% endblock content %}

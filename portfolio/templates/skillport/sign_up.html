@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'skillport/css/sign_up_style.css' %}">
+    <title>Registration</title>
+</head>
+<body>
+    <form action="{% url 'register' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container">
+            <div class="register__form"> 
+                <div class="form__title__1">
+                    <div class="line"></div>
+                    <div>Регистрация</div>
+                    <div class="line"></div>
+                </div>
+                <div class="main__information">
+                    <img id="preview" src="/static/skillport/img/logo.jpg" class='logo'>
+                    <div class="main__content">
+                        <h1>Ваш логин</h1>
+                        {{ form.username }}
+                        <h1>Электронная почта</h1>
+                        {{ form.email }}
+                        <h1>Пароль</h1>
+                        {{ form.password1 }}
+                        <h1>Повторите пароль</h1>
+                        {{ form.password2 }}
+                    </div>
+                </div> 
+                
+                <div class="form__title__2">
+                    <div class="line"></div>
+                    <div>Дополнительная информация</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="other__information">
+                    <div class="other__content">
+                        <div class="surname__name__h">
+                            <title_1>Фамилия</title_1>
+                            <title_1>Имя</title_1>
+                        </div>
+                        <div class="surname__name">
+                            {{ form.last_name }}
+                            {{ form.first_name }}
+                        </div>
+                        <h2>Специализация</h2>
+                        {{ person_form.specialization }}
+                        <h2>Ссылки на соцсети</h2>
+                        {{ person_form.links }}
+                    </div>
+                    <div class="create">
+                        <div>
+                            <img src="/static/skillport/img/upload.png">
+                            <label>Загрузите фото профиля</label>
+                        </div>
+                        
+                        <div class="user__setting">
+                            <!-- <img src="https://placehold.it/150x150" alt="" class="avatar"> -->
+                            {{ person_form.profile_picture }}
+                        </div>
+                        <button class="register" type="submit">Зарегистрироваться</button>
+                    </div>
+                </div>
+                <div class="about__me">
+                    <h2>Напишите немного о себе</h2> 
+                    {{ person_form.about }}
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+        function previewImage(event) {
+            const fileInput = event.target;
+            const preview = document.getElementById('preview');
+          
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+          
+            reader.onload = function (e) {
+              preview.src = e.target.result;
+            };
+    
+            reader.readAsDataURL(file);
+          }
+    </script>
+</body>
+</html>

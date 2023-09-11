@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+    <script type="text/javascript">
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function uuidv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+
+        let device = getCookie('device')
+
+        if (device == null || device == undefined) {
+            device = uuidv4()
+        }
+
+        document.cookie = "device=" + device + ";domain=;path=/"
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="works">
+        <div class="container">
+            <form method="GET" id="search">
+                <div class="nav-links">
+                    <div class="search">
+                        <input class="search__text" value="{{ search_query }}" placeholder="Поиск..." name="search_query" type="text">
+                    </div>
+                    <div class="dropdown">   
+                        <div>
+                            <select class="dropdown__menu" name="category" onchange="document.getElementById('search').submit()">
+                                {% if selected == "all" %}
+                                    <option class="category" value="all" selected>Все категории</option>
+                                {% else %}
+                                    <option class="category" value="all">Все категории</option>
+                                {% endif %}
+                                {% for cat in categories %}
+                                    {% if selected == cat %}
+                                        <option class="category" value="{{ cat }}" selected>{{ cat }}</option>
+                                    {% else %}
+                                        <option class="category" value="{{ cat }}">{{ cat }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div> 
+                    </div>
+                </div>
+            </form>
+
+            <div class="portfolio">
+            {% for project in projects %}
+                    <div class="portfolio__col">
+                        <div class="work">
+                            <div class="image">
+                                <a href="{% url 'project' project.pk %}" target = "_blank">
+                                    <img src="{% if project.image %}{{ project.image.url }}{% else %}https://placehold.it/272x272{% endif %}" alt="" class="work__image">
+                                </a>
+                            </div>
+                            <div class="work__content">
+                                <div class="work__title">
+                                    <div class="work__text">
+                                        {{ project.title }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+{% endblock %}

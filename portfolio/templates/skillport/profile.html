@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'skillport/css/profile.css' %}">
+    <title>Skillport - Мой профиль</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <div class="user">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'skillport/img/logo.svg' %}" alt="">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <a href="{% url 'subscriptions' %}" class="nav__link">
+                        <img src="{% static 'skillport/img/add.png' %}" alt="">
+                    </a>
+                    <a href="{% url 'favorites' %}" class="nav__link">
+                        <img src="{% static 'skillport/img/favorites.png' %}" alt="">
+                    </a>
+                    <a href="{% url 'profile' %}" class="nav__link">
+                        <img src="{% static 'skillport/img/profile.png' %}" alt="">
+                    </a>
+                    <p>{{ request.user }} | 
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </p>
+                </nav>
+
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="box">
+            <div class="box-main">
+                <div class="over">
+                    <button><img src="{% static 'skillport/img/edit.png' %}"></button>
+                    <a href="#"><img src="{% static 'skillport/img/info.png' %}" class="a-bit-lower" ></a> 
+                </div>
+                <div class="avatar">
+                    <img src="{{ request.user.person.profile_picture.url }}" alt="" class="profile-photo">
+                </div>
+                <input class="login" value="{{ request.user.username }}" placeholder="Логин">
+            </div>
+            <div class="box-add">
+                <h3 class="title title1">Электронная почта</h3>
+                <input class="login big-input" value="{{ request.user.email }}">
+                <h3 class="title">Пароль</h3>
+                <input class="login big-input">
+                <div class="double-input">
+                    <div>
+                        <h3 class="title">Фамилия</h3>
+                        <input class="login big-input small-input left" value="{{ request.user.last_name }}">
+                    </div>
+                    <div>
+                        <h3 class="title">Имя</h3>
+                        <input class="login big-input small-input right" value="{{ request.user.first_name }}">
+                    </div>
+                </div>
+                <h3 class="title">Специализация</h3>
+                <input class="login big-input" value="{{ request.user.person.specialization }}">
+                <h3 class="title">Контакты</h3>
+                <input class="login big-input" value="{{ request.user.person.links }}">
+            </div>
+        </div>
+        <div class="about-block">
+            <textarea contenteditable="true" class="about" placeholder="О себе..." >{{ request.user.person.about }}</textarea>
+        </div>
+        <form action="{% url 'create' %}">
+            <div class="create">
+                <hr></hr>
+                <button type="submit">Создать</button>
+                <hr></hr>
+            </div>
+        </form>
+
+        <div class="portfolio">
+            {% for project in user_projects %}
+                <div class="portfolio__col">
+                    <div class="work">
+                        <a href="{% url 'project' project.pk %}" target = "_blank">
+                            <div class="image">
+                                <img src="{{ project.image.url }}" alt="" class="work__image">
+                            </div>
+                        </a>
+                        <div class="work__content">
+                            <div class="work__title">
+                                <p class="work__text">{{ project.title }}</p>
+                            </div>
+                            <img src="{% static 'skillport/img/edit.png' %}" alt="" class="work__favorites">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__link">
+                    https://vk.com/kegab00m
+                </div>
+                <div class="footer__logo">
+                    <img src="{% static 'skillport/img/logo.jpg' %}" alt="" width="42" height="42">
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>

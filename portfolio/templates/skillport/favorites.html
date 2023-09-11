@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    SkillPort - Избранное
+{% endblock %}
+
+{% block content %}
+    <div class="works">
+        <div class="container">
+            <div class="portfolio">
+            {% for project in favorites %}
+                <div class="portfolio__col">
+                    <div class="work">
+                        <div class="image">
+                            <a href="{% url 'project' project.pk %}" target = "_blank">
+                                <img src="{{ project.image.url }}" alt="" class="work__image">
+                            </a>
+                        </div>
+                        <div class="work__content">
+                            <div class="work__title">
+                                <div class="work__text">
+                                    {{ project.title }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
